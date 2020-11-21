@@ -1,9 +1,0 @@
-first_name last_name id pps hours hourly_rate overtime_rate tax_credit standard_band
-Malcolm Johnson 9250A 2762028X 8 20.81 27.05 2.081 20
-Steven Brown 8972K 7380881C 8 23.73 30.85 2.373 20
-Daniel Hawthorne 2893Z 7009943D 8 29.48 38.32 2.948 20
-Lee Deatherage 6689V 4206902W 8 15.92 20.7 1.592 20
-Clarence Welch 1326D 8430706W 8 15.68 20.38 1.568 20
-Christine Bullins 1777G 5211683E 8 24.2 31.46 2.42 20
-Leon Smolen 1034X 1491156G 8 15.93 20.71 1.593 20
-Michelle Racine 6605Y 3909731A 8 15.95 20.73 1.595 20
