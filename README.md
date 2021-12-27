@@ -1,3 +1,3 @@
-# **DBS**
+# **DBS datasets**
 
-Some random .csv files used for some school projects.
+A couple of random .csv files used for some school projects.
