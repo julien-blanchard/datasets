@@ -1,0 +1,17 @@
+# %% [markdown]
+# Wink-nlp: word type count
+
+Try editing this cell by clicking the pencil on the left!
+# %% [javascript]
+const winkNLP = (await import('https://cdn.skypack.dev/wink-nlp')).default;
+const model = (await import('https://cdn.skypack.dev/wink-eng-lite-web-model')).default;
+const nlp = winkNLP(model);
+let its = nlp.its;
+let as = nlp.as;
+
+let text = "Its quarterly profits jumped 76% to $1.13 billion for the three months to December."
+
+let doc = nlp.readDoc( text );
+doc.tokens()
+    .out(its.type, as.freqTable)
+	.forEach(e => {console.log(`Type: ${e[0]} => ${e[1]}`)})
