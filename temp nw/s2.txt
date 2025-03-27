@@ -1,0 +1,276 @@
+3.l.Netvvork Flow 1 — Campus Network and Remote Office
+This first traffic flow covers communication between one of the organisations remote offices and the
+head office campus network. Even though I have classified this flow as one of the least risky there are
+still a lot of security measures built into this communication path. In this network flow a lot of the
+security concems are in relation to the devices connecting to the network and making sure they do not
+introduce a security exploit into our enviromnent such as malware.
+
+There are ten separate security technologies and techniques I will elaborate on which make up the
+defense in depth strategy ofthis particular network flow.
+1. Anti-Virus Software
+The first step in securing the network is making sure that devices such as laptops connecting to the
+network are not infected with viruses or malware. This at tits most basis level is having up to date antivirus software running on the laptops in the organisation. Most anti-virus application these days do a
+lot more than just scanning the devices for viruses they can also provide protect against malware and
+ransomware. Vendors such as Sophos also provide advanced Endpoint Detection and Response (EDR)
+through their Intercept X product which continuously monitors and collects data from the endpoints
+that could indicate a threat and then automatically respond to these threats to remove or contain then
+and send notifications to the organisation’s security operations center (Sophos, 2022).
+2. Network Access Control (NAC) Posture
+Network Access Control applications allow us to restrict the devices that are allowed to connect to our
+network. An important part of what network access control can do for our organisation in term of
+making sure the endpoint is secure is in relation to posture. Posture means that there is a NAC agent
+installed on the endpoint which scans the endpoint to make sure certain parameters are met before
+allowing the endpoint in this case the user laptop to connect to the LAN or WLAN. In this case we
+could set the posture agent to detect ifthe anti-virus definitions on the laptop are up-to-date and if not,
+we could block the laptop from connecting top our network or allow limited connectivity using an
+access list so the device can only communicate with the anti-virus update server to update its virus
+definitions. Cisco Identity Services Engine (ISE) is an example of a Network Access Control application
+which I have researched as part ofthis project (Cisco ISE, 2022).
+3. Network Access Control MAC Authentication
+For dumber devices such as IP Phones that we want to connect to the network Cisco ISE allows us to
+do MAC address authentication. This is where the MAC address of the devices is configured on the
+network access control system and once the phone is connected to the switchport the phone is authorised
+to connect to the network using MAC address authentication.
+4. Network Access Control Multi-Factor Authentication
+Since the switch in the campus network is configured to use the Cisco ISE to authenticate users
+connecting their laptops to the Local Area Network only authorised users and laptops are able to connect
+to our network. This happens using 802.lx and can be a combination or certificate and
+username/password authentication to validate that this is an authorised user and device. Using network access control to restrict users and devices that can access our LAN adds a comprehensive layer of
+security to our network perimeter.
+5 . Internal Firewalls
+Firewalls use both static and dynamic packet filtering and VPN support to ensure that all cormections
+between the network, intemet, and firewall are valid and secure. They can use whitelists or a signaturebased IPS to distinguish between safe applications and unwanted ones, which are then identified using
+SSL decryption. A firewall solution such as Cisco Firepower would be deployed within acme.inc
+environment to protect traffic flowing north/south into and out ofthe network and also east/west traffic
+which flows intemal to the network between such as traffic between the campus and remote office
+network.
+6. High Availability
+As with all critical network devices that need to stay in operation to allow the organisation to function,
+I have installed them in high availability configuration. This is not only to provide high availability in
+the case that we have a fault in the network, it is also to allow a constant patching and upgrade cycle to
+take place without disrupting production services. One ofthe most critical security incident preventions
+is constant patching ofthe IT infrastructure to make sure that bugs and exploits that are discovered in
+the firmware can be patched regularly and critical zero-day vulnerabilities can be patched at very short
+notice.
+7. MPLS Remote Site Connectivity
+Howl chose to connect my remote sites together as Well as the connectivity from the remote sites back
+to the head office network also adds an extra layer of security to this network flow. Unlike using the
+Intemet for the WAN connectivity between my remote sites and head office MPLS provides more
+secure connectivity. Using MPLS as well as giving me a bandwidth and latency guarantee for
+connecting the sites also gives me a private network with my services providers network which is more
+secure than a shared public connect and I can also use encryption over the MPLS connection for further
+security.
+8. Email Security
+One of the most prevalent ways attackers can introduce malware or a virus into our organisations
+network is via email. To combat this risk, we can use a hosted email security service such as Cisco
+IronPort, which cleans up all inbound email by using industry leading anti-spam and anti-virus to make
+sure the email that reach the users are free from malware
+9. Wireless LAN authentication
+As well as securing access to the LAN Network Access Control applications such as Cisco ISE can also
+control access to the Wireless LAN in the same manner. In the case of the wireless LAN, we may also
+want to provide access to a guest LAN for visitors to our offices or to support users’ non-corporate
+BYOD devices. Cisco ISE also allows us to create a guest wireless access landing page where they can
+request sponsor approved access to the guest wireless network. The guest wireless access can then be
+segregated from the corporate network using access lists to allow the guest user access just to the public
+internet. We can also complete some agentless posturing to make sure that the guest devices connecting
+to our wireless guest network are running up-to-date virus definitions for added security.
+10. Network Segregation
+As outlined in the introduction this organisation has multiple departments working in the same building
+and connecting to the same LAN switches. Network segregation adds an extra layer of security to the
+network by keeping these departments in separate VLAN’s. By doing this we can also deploy Dynamic
+Access Lists (DACs) to the switches or wireless controllers to make sure depending on which
+Organisation Unit (OU) you are port of you only have access to the specific IT resources that you need
+access to. An example of this would be for the network operations teams where as well as restricting
+access to comiect to the network routers and switches via TACACS, this access would also be controlled
+via a Dynamic Access List. So only devices connected to the network and authenticated to be laptops
+used by the network operations teams would even be able to connect to the routers and switches. So,
+users in the human resources VLAN wouldn’t even be able to ping the routers and switches and would
+only have access to the resources they require for doing theirjob.
+
+Natwork Flow 2 — AWS and On-Premise Data Center
+
+1. Amazon Web Services Identity and Access Management (IAM)
+AWS IAM is used to securely control access to our AWS resources. A principal is an entity that can
+perform actions on an AWS resource. A user, a role or an application can be a principal. To confirm the
+identity of the principal and allow them to access our AWS resources we authenticate using identity
+and access management using credentials or private keys. AWS IAM allows us to provision individual
+usernames and passwords for each user or resource looking to access acme.inc resources in AWS. We
+can also configure granular permissions and apply access policies to individual requests for example
+we can allow a user to download files from AWS but block certain users from editing the infonnation
+in those files through the IAM access policies (AWS IAM, 2022).
+AWS IAM also allows us to implement Multifactor authentication (MFA) this gives an extra layer of
+security to our user accounts as we can request the user provide multiple forms of identification before
+giving them access to our AWS resources. This could be requesting the user to provide a usemame and
+password along with a one-time password generated by an RSA token or an authentication app on the
+user’s phone. IAM also allows us to provision identify federation, this is where IAM is configured to
+trust another authentication source. In this case our users could have already authenticated via a google
+account and using identity federation we can allow access to our AWS resources via this authentication.
+This gives us the capability to use Single Sign On (SSO) functionality to allow users use the same
+account details, username and password to log onto both the AWS cloud platform as well as our
+organisations on-premise resources.
+IAM can also help us achieve our compliance standards we have implemented in our environment as
+IAM is compliant with some ofthese standards including the Payment Card Industry Security Standard
+(PCI DSS). PCI DSS would be applicable if our organisation amce.inc was processing credit card
+payments for services they are selling through our website hosted in our AWS data center. PCI DSS is
+made up of twelve controls in order to be complaint with the PCI DSS standard and one of these is to
+maintain proper password protections which is where AWS IAM fulfils this requirement.
+In terms of cost AWS IAM is free of charge as there are no additional costs associated with IAM security
+and we can create as many users, groups and policies as we need to control the access to our environment
+for free.
+2. AWS Shield
+AWS Shield is another security web service provided by AWS which is designed to protect our AWS
+data center and public facing web services against a Distributed Denial of Service (DDOS) attack. Since
+we are hosting our public website (website.acme.com) in the AWS cloud it is important to enable AWS
+Shield to mitigate against a DDOS attack being executed against our website.
+
+AWS Shield offers multiple services including traffic monitoring which enables AWS Shield to inspect
+traffic entering our network and apply a combination of traffic signatures and algorithms to detect
+suspicious traffic pattems. The core service AWS Shield provides is the Distributed Denial of Service
+mitigation where ninety nine percent of attacks are automatically mitigated within less than one second
+of the attack occurring. AWS Shield also provides a global threat dashboard which can be used by our
+organisation security operations center (SOC) as it provides DDOS information on attacks that are
+ongoing across the AWS network and this combined with the advanced real-time metrics and reports
+from AWS Shield provides valuable insights for our SOC. In the event of a DDOS attack taking place
+against our AWS public facing website AWS Shiels also provides 24 x 7 access to the AWS DDOS
+Response Team (DRT). The DRT can provide assistance during a DDoS attack and help to customise
+mitigation techniques (AWS Shield, 2022).
+Common DDOS attacks that AWS Shield protects us against would be a SYN Flood Attack, this is
+where an attacker initiates a connect to our web server and send the SYN packet to start the TCP threeway handshake. However, instead of completing the TCP three-way handshake the attacker just keeps
+send SYN packets which consume the connection state table to where our server can no longer accept
+genuine connections. AWS Shield also offers protection against volumetric attacks, this is Where the
+attacker sends a large amount of malicious traffic to our network which overwhelms our network and
+causes our applications and services to become unavailable to legitimate users or employees.
+There are two different tiers available when using AWS Shield, AWS Shiels Standard and AWS Shield
+Advanced. AWS Shield Standard is the free tier of AWS Shield and it does offer DDOS protection
+against some ofthe most common layer 3 and layer 4 DDOS attacks. AWS Shield Advanced is a paid
+service which provides additional DDOS protection at the application and network layers.
+3. AWS Web Application Firewall
+AWS Web Application Firewall (WAF) is a security web service that control the network traffic
+entering and existing the AWS public cloud for applications and websites. By provisioning AWS
+WAF’s in the flow of the network traffic before it hits our web servers, we can configure security rules
+that allow us to deny or monitor the requests before they hit our web servers. There are a few key
+features of AWS WAF’s including protecting our web servers from web attacks by filtering the web
+requests according to the rules we create on the web application firewall. These rules can filter by IP
+address, HTTP headers, URI strings from a website and HTTP body. AWS WAF’s also provides for
+integrations into other AWS services including Amazon EC2, CloudFront, Load balancer.
+4. AWS CloudWatch
+Amazon CloudWatch is an infrastructure monitoring and management platform. The features of
+Amazon CloudWatch offer two major services, namely logging and metrics. This is achieved through
+
+CloudWatch logs insights, CloudWatch logs, CloudWatch alarms and CloudWatch events. These are
+all very usefill tools for our organisations SOC to give insights into what is happening in our AWS data
+center. CloudWatch Logs insights assists us in visualising and analysing log data. We can do this by
+creating graphs to visual the data and publish that data to our CloudWatch dashboard where our security
+operations team can also filter and aggregate the log data. CloudWatch logs can be used to collect and
+store the logs from multiple AWS services, on-premise resources or applications. Using CloudWatch
+Alarms an alert can be triggered to the metrics we have configured exceed a specific threshold we have
+setup. These alerts can also be displayed on the CloudWatch dashboard which can be monitored by our
+security operations center. CloudWatch Events, monitors state changes on our AWS resources.
+5. Amazon CloudFront
+AWS CloudFront is a content delivery network (CDN) that allows us to transfer static web content such
+as files, media, images and videos to users across the globe securely and at high speeds. Amazon
+CloudFront is extremely secure in that it provides both network and application-level protection.
+CloudFront uses AWS Shield to protect our website and application from Distributed Denial of Service
+attacks and also uses the HTTPS protocol for secure encrypted transfers. AWS CloudFront offers pay
+as you go pricing and there are no transfer fees for origin fetches from any AWS origin and ASWS
+Certificate Manager (ACM) offers TLS certificates at no charge.
+6. Amazon S3 bucket for backup and recovery
+We use an Amazon S3 bucket to back up a copy of the data on our web servers, this is so our data can
+be recovered quickly in the event of a failure of the primary data on these web servers. This could be
+caused by a cyber-attack on our web servers where the data could be destroyed or encrypted in the event
+of a ransomware attack. There are also other unplanned events which might require us to us our data
+backups to restore our web servers which as data corruption or the accidental deletion of our data by an
+administrator of the system.
+7. DMVPN/IPSEC WAN connectivity
+We need a secure connection method to allow network connectivity between our AWS data center and
+our on-premise network. There are multiple ways we could design the network to achieve this aim,
+however in this case since I am running Cisco routers at my WAN edge, I have chosen to create a
+Dynamic Multipoint VPN (DMVPN) between my cisco routers. In AWS I can provision the Cisco
+l000v router and connect this to my on-premise physical routers building a scalable IPsec Virtual
+Private Network (VPN) over the Intemet. This creates and encrypted tunnel over which my sites can
+communicate securely and I can then route my traffic between the AWS cloud and my on-premise data
+center using private addressing.
+
+
+8. Network Device Hardening
+There are multiple standards we can use for hardening the configurations of our network devices some
+ofthe bodies that release these standards are the National Institute of Standards and Technology (NIST)
+and the Computer Information Security (CIS) Center for Internet Security. By joining one of these
+institutes, we can download configuration files that document the configurations we need to add and
+remove from our network devices to meet the standard. There will be separate configurations for
+different equipment manufactures and different network devices including routers, switches and
+firewalls. Some of these configurations may include configuring network access privileges, shutting
+down inactive network ports, disabling certain network protocols or encrypting network traffic. Since
+we are using mostly Cisco networking equipment Cisco also maintain equipment hardening guidelines,
+however using an industry standard such as NIST or CIS can make it easier to be audited against if we
+are aiming to achieve a compliance standard such as PCI DSS or ISO 27001.
+9. Access Lists on the switch VTY lines configuration
+By adding access control lists to the VTY lines of the routers and switches we can make sure that only
+static IP address or subnets assigned to the network engineers can access these devices. This will provide
+an extra layer of security as well as being protected by TACACS where the engineers also need to
+provide usemame/password to connect to the network devices. We could also use Cisco AnyConnect
+in combination with Cisco ISE to have the network engineers authenticate using multifactor
+authentication to Cisco AnyConnect before being assigned an IP address in the subnet that is allowed
+to connect to the network devices.
+10. Intemal Firewalls
+We add intemal as firewalls as well as extemal firewalls to protect the internal or east to west network
+flows within our organisation. The internal firewalls can be used to provide network segmentation as
+well as inspect traffic flowing through our network. These firewalls need to be application aware and
+provide functions such as deep packet inspection to be able to identify protocols and applications by
+payload and notjust via the IP header. This should also include SSL inspection. Our internal firewalls
+should also perform intrusion prevention so the firewall can identify malicious traffic, unusual traffic
+pattems or data breach attempts. Cisco Firepower firewalls provide our organisation these features and
+we can size the firewalls accordingly to the network traffic throughput we expect to flow through these
+firewalls.
+1 1. Cisco ACI zero trust software defined on-premise data center network
+I have chosen to design the on-premise data center to use Cisco Application Centric Infrastructure (ACI)
+as the core network technology for the data and also to provide zero trust connectivity between the
+resources connected to the data center network. Cisco ACI uses a spine and leaf connectivity model
+
+which is very efficient method ofnetwork connectivity as all resources on the network are no more than
+two hops away from each other. Cisco ACI is a software-define networking solution and is configured
+using the APICs that are connected to the network. Cisco ACI uses the Cisco Nexus 9000 series of
+switches for both the spines and the leaf’ s which are connected using 100Gbps cables for maximum
+throughput.
+Cisco ACI uses bridge aggregation groups along with endpoint groups to control the connectivity of
+devices to the network and communication between these endpoint group are tightly controlled using
+contracts. The contracts are similar to access lists in traditional networking however unlike traditional
+networking where traffic is implicitly allowed until the access list is applied to block network traffic. In
+Cisco ACI the network traffic between EPG’s is implicitly denied until contracts are put in place to
+allow communication between devices on the network. This is where the zero-trust network security
+architect comes from, unless we specially trust a connection between two endpoints on the network then
+no traffic can pass between them.
+12. Access Control using Red Hat Identity Management (IDM)
+Since a lot of our servers are running on Red Hat Enterprise Linux (RHEL) we can use the built-in
+access management to secure the access management to these servers. Red Hat IDM provides a way for
+us to securely manage the identities for users, machines and servers with our RHEL environment. Red
+Hat IDM allows us to define access control policies and delegate specific administrative tasks to other
+power users to create a clear separation of responsibilities. Red Hat IDM also provides a Public Key
+Infrastructure (PKI) service to allow us to sign and publish certificates for both hosts and services along
+with allowing us to create Certificate Revocation Lists (CRL) to revoke invalid certificates that we have
+generated. All this functionality provided by Red Hat IDM is free of charge and included with our
+RHEL licenses.
+13. Storage Area Network (SAN) security
+There are many different storage area network providers in the market for this design I have chosen to
+use Pure Storage as they specialise in all flash arrays and offer some interesting security features that I
+can integrate into my overall network design. Two of the main security features that I am trying to
+implement when designing the storage area network is making sure that my data is encrypted at rest
+and that I can recover data quickly and securely if my organisation is exposed to a ransomware attack.
+Pure SafeMode snapshots protect our organisations backup data and metadata by creating a secure copy.
+If acme.inc is infected with ransomware the ransomware attack can’t modify, delete or encrypt
+SafeMode snapshots even with administrator credentials. By following a straightforward process, we
+can restore business critical data and be back operating quickly. Pure storage also provides data
+encryption at rest using AES-256-bit encryption
+
+14. Offsite tape backup and recovery
+Providing Offsite backups of our data can be critical to making sure we can restore data in the event of
+a security breach, malware attack or another disaster recovery situation that might occur at our onpremise data center. We could use a cloud backup service for this or in this case we will use a tape
+backup service such as Veritas NetBackup with the tapes being collected and stored in a secure location
+on a weekly basis. Ifthere is a successful ransomware attack against our organisation as well as having
+the multiple defense in depth layers that we have built into our enterprise architecture we will also add
+Offsite tape backups as an extra layer of defense. That way if our production data or on-site backups
+were compromised, we could still recover our data from our Offsite tape backups.
+
+
+Natwork Flow 3 — Remote Worker and On-Premise Data Center
+
